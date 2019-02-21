@@ -1,12 +1,6 @@
 package ic.doc;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import ic.doc.catalogues.BritishLibraryCatalogue;
 import ic.doc.catalogues.LibraryCatalogue;
-import java.util.List;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Rule;
@@ -45,50 +39,56 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueByTitle() {
 
-    bookSearchQueryBuilder.withTitle("Two Cities");
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue).searchFor("TITLECONTAINS(Two Cities) ");
+    }});
 
-    assertThat(books.size(), is(1));
-    assertTrue(books.get(0).matchesAuthor("dickens"));
+    bookSearchQueryBuilder.withTitle("Two Cities").build().execute(libraryCatalogue);
   }
 
   @Test
   public void searchesForBooksInLibraryCatalogueBeforeGivenPublicationYear() {
 
-    bookSearchQueryBuilder.withPublishedDateBefore(1700);
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue).searchFor("PUBLISHEDBEFORE(1700) ");
+    }});
 
-    assertThat(books.size(), is(1));
-    assertTrue(books.get(0).matchesAuthor("Shakespeare"));
+    bookSearchQueryBuilder.withPublishedDateBefore(1700).build().execute(libraryCatalogue);
   }
 
   @Test
   public void searchesForBooksInLibraryCatalogueAfterGivenPublicationYear() {
 
-    bookSearchQueryBuilder.withPublishedDateAfter(1950);
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue).searchFor("PUBLISHEDAFTER(1950) ");
+    }});
 
-    assertThat(books.size(), is(1));
-    assertTrue(books.get(0).matchesAuthor("Golding"));
+    bookSearchQueryBuilder.withPublishedDateAfter(1950).build().execute(libraryCatalogue);
   }
 
   @Test
   public void searchesForBooksInLibraryCatalogueWithCombinationOfParameters() {
 
-    bookSearchQueryBuilder.withLastName("dickens").withPublishedDateBefore(1840);
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue)
+          .searchFor("LASTNAME='dickens' PUBLISHEDBEFORE(1840) ");
+    }});
 
-    assertThat(books.size(), is(1));
-    assertTrue(books.get(0).matchesAuthor("charles dickens"));
+    bookSearchQueryBuilder.withLastName("dickens").withPublishedDateBefore(1840)
+        .build().execute(libraryCatalogue);
+
   }
 
   @Test
   public void searchesForBooksInLibraryCatalogueWithCombinationOfTitleAndOtherParameters() {
 
-    bookSearchQueryBuilder.withTitle("of").withPublishedDateAfter(1800).withPublishedDateBefore(2000);
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue)
+          .searchFor("TITLECONTAINS(of) PUBLISHEDAFTER(1800) PUBLISHEDBEFORE(2000) ");
+    }});
 
-    assertThat(books.size(), is(3));
-    assertTrue(books.get(0).matchesAuthor("charles dickens"));
+    bookSearchQueryBuilder.withTitle("of").withPublishedDateAfter(1800)
+        .withPublishedDateBefore(2000).build().execute(libraryCatalogue);
+
   }
 }
