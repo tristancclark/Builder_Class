@@ -18,9 +18,14 @@ public class BritishLibraryCatalogue {
 
   private BritishLibraryCatalogue() {}
 
-  private static BritishLibraryCatalogue instance = new BritishLibraryCatalogue();
+  private static BritishLibraryCatalogue instance;
 
-  public static BritishLibraryCatalogue getInstance() { return instance; }
+  public static synchronized BritishLibraryCatalogue getInstance() {
+    if (instance == null) {
+      instance = new BritishLibraryCatalogue();
+    }
+    return instance;
+  }
 
   private final Collection<Book> catalogue = allTheBooks();
 
