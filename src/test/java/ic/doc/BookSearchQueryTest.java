@@ -5,31 +5,41 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import ic.doc.catalogues.BritishLibraryCatalogue;
+import ic.doc.catalogues.LibraryCatalogue;
 import java.util.List;
+import org.jmock.Expectations;
+import org.jmock.integration.junit4.JUnitRuleMockery;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class BookSearchQueryTest {
 
+
+  @Rule
+  public JUnitRuleMockery context = new JUnitRuleMockery();
+  LibraryCatalogue libraryCatalogue = context.mock(LibraryCatalogue.class);
+
   BookSearchQueryBuilder bookSearchQueryBuilder = BookSearchQueryBuilder.aBookSearchQueryBuilder();
+
 
   @Test
   public void searchesForBooksInLibraryCatalogueByAuthorSurname() {
 
-    bookSearchQueryBuilder.withLastName("dickens");
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue).searchFor("LASTNAME='dickens' ");
+    }});
 
-    assertThat(books.size(), is(2));
-    assertTrue(books.get(0).matchesAuthor("dickens"));
+    bookSearchQueryBuilder.withLastName("dickens").build().execute(libraryCatalogue);
   }
 
   @Test
   public void searchesForBooksInLibraryCatalogueByAuthorFirstname() {
 
-    bookSearchQueryBuilder.withFirstName("Jane");
-    List<Book> books = bookSearchQueryBuilder.build().execute(BritishLibraryCatalogue.getInstance());
+    context.checking(new Expectations() {{
+      exactly(1).of(libraryCatalogue).searchFor("FIRSTNAME='Jane' ");
+    }});
 
-    assertThat(books.size(), is(2));
-    assertTrue(books.get(0).matchesAuthor("Austen"));
+    bookSearchQueryBuilder.withFirstName("Jane").build().execute(libraryCatalogue);
   }
 
   @Test
