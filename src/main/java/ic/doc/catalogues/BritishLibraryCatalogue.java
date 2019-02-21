@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BritishLibraryCatalogue {
+public class BritishLibraryCatalogue implements LibraryCatalogue {
 
   // imagine that each new instance of this object uses more than 500MB of RAM
 
