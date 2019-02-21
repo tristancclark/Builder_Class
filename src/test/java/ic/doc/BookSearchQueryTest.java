@@ -14,8 +14,7 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueByAuthorSurname() {
 
-    bookSearchQueryBuilder.resetQuery();
-    bookSearchQueryBuilder = bookSearchQueryBuilder.withLastName("dickens");
+    bookSearchQueryBuilder.withLastName("dickens");
     List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(2));
@@ -25,8 +24,7 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueByAuthorFirstname() {
 
-    bookSearchQueryBuilder.resetQuery();
-    bookSearchQueryBuilder = bookSearchQueryBuilder.withFirstName("Jane");
+    bookSearchQueryBuilder.withFirstName("Jane");;
     List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(2));
@@ -36,8 +34,7 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueByTitle() {
 
-    bookSearchQueryBuilder.resetQuery();
-    bookSearchQueryBuilder = bookSearchQueryBuilder.withTitle("Two Cities");
+    bookSearchQueryBuilder.withTitle("Two Cities");
     List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(1));
@@ -47,8 +44,7 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueBeforeGivenPublicationYear() {
 
-    bookSearchQueryBuilder.resetQuery();
-    bookSearchQueryBuilder = bookSearchQueryBuilder.withPublishedBeforeDate(1700);
+    bookSearchQueryBuilder.withPublishedDateBefore(1700);
     List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(1));
@@ -58,8 +54,7 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueAfterGivenPublicationYear() {
 
-    bookSearchQueryBuilder.resetQuery();
-    bookSearchQueryBuilder = bookSearchQueryBuilder.withPublishedAfterDate(1950);
+    bookSearchQueryBuilder.withPublishedDateAfter(1950);
     List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(1));
@@ -69,7 +64,8 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueWithCombinationOfParameters() {
 
-    List<Book> books = new BookSearchQuery(null, "dickens", null, null, 1840).execute();
+    bookSearchQueryBuilder.withLastName("dickens").withPublishedDateBefore(1840);
+    List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(1));
     assertTrue(books.get(0).matchesAuthor("charles dickens"));
@@ -78,7 +74,8 @@ public class BookSearchQueryTest {
   @Test
   public void searchesForBooksInLibraryCatalogueWithCombinationOfTitleAndOtherParameters() {
 
-    List<Book> books = new BookSearchQuery(null, null, "of", 1800, 2000).execute();
+    bookSearchQueryBuilder.withTitle("of").withPublishedDateAfter(1800).withPublishedDateBefore(2000);
+    List<Book> books = bookSearchQueryBuilder.build().execute();
 
     assertThat(books.size(), is(3));
     assertTrue(books.get(0).matchesAuthor("charles dickens"));

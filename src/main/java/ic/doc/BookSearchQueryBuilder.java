@@ -5,8 +5,8 @@ public class BookSearchQueryBuilder {
   private String firstName = null;
   private String lastName = null;
   private String title = null;
-  private Integer publishedAfterDate = null;
-  private Integer publishedBeforeDate = null;
+  private Integer publishedDateAfter = null;
+  private Integer publishedDateBefore = null;
 
   private BookSearchQueryBuilder() {}
 
@@ -15,7 +15,7 @@ public class BookSearchQueryBuilder {
   }
 
   public BookSearchQuery build() {
-    return new BookSearchQuery(firstName, lastName, title, publishedAfterDate, publishedBeforeDate);
+    return new BookSearchQuery(firstName, lastName, title, publishedDateAfter, publishedDateBefore);
   }
 
 
@@ -34,27 +34,14 @@ public class BookSearchQueryBuilder {
     return this;
   }
 
-  public BookSearchQueryBuilder withPublishedAfterDate(Integer publishedAfterDate) {
-    this.publishedAfterDate = publishedAfterDate;
+  public BookSearchQueryBuilder withPublishedDateAfter(Integer publishedAfterDate) {
+    this.publishedDateAfter = publishedAfterDate;
     return this;
   }
 
-  public BookSearchQueryBuilder withPublishedBeforeDate(Integer publishedBeforeDate) {
-    this.publishedBeforeDate = publishedBeforeDate;
+  public BookSearchQueryBuilder withPublishedDateBefore(Integer publishedBeforeDate) {
+    this.publishedDateBefore = publishedBeforeDate;
     return this;
   }
-
-  public void resetQuery() {
-    this.firstName = null;
-    this.lastName = null;
-    this.title = null;
-    this.publishedAfterDate = null;
-    this.publishedBeforeDate = null;
-  }
-
-
-
-
-
 
 }
