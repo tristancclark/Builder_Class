@@ -16,7 +16,8 @@ public class BritishLibraryCatalogue implements LibraryCatalogue {
 
   // imagine that each new instance of this object uses more than 500MB of RAM
 
-  private BritishLibraryCatalogue() {}
+  private BritishLibraryCatalogue() {
+  }
 
   private static BritishLibraryCatalogue instance;
 

@@ -13,7 +13,8 @@ public class BookSearchQueryTest {
   public JUnitRuleMockery context = new JUnitRuleMockery();
   LibraryCatalogue libraryCatalogue = context.mock(LibraryCatalogue.class);
 
-  BookSearchQueryBuilder bookSearchQueryBuilder = BookSearchQueryBuilder.aBookSearchQueryBuilder();
+  BookSearchQueryBuilder bookSearchQueryBuilder = BookSearchQueryBuilder
+      .createBookSearchQueryBuilder();
 
 
   @Test

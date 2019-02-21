@@ -8,9 +8,10 @@ public class BookSearchQueryBuilder {
   private Integer publishedDateAfter = null;
   private Integer publishedDateBefore = null;
 
-  private BookSearchQueryBuilder() {}
+  private BookSearchQueryBuilder() {
+  }
 
-  public static BookSearchQueryBuilder aBookSearchQueryBuilder() {
+  public static BookSearchQueryBuilder createBookSearchQueryBuilder() {
     return new BookSearchQueryBuilder();
   }
 
